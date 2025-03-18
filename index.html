@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Romântica</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .hidden {
+            display: none;
+        }
+        .button {
+            background: transparent;
+            border: 2px solid pink;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .divider {
+            width: 80%;
+            border-bottom: 1px solid pink;
+            margin: 20px auto;
+        }
+        .spotify {
+            margin-bottom: 20px;
+        }
+        .heart {
+            position: absolute;
+            color: pink;
+            font-size: 20px;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            from {
+                transform: translateY(-100vh);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="startScreen">
+        <button class="button" onclick="showContent()">❤️ Clique</button>
+    </div>
+    
+    <div id="content" class="hidden">
+        <div class="content">
+            <iframe class="spotify" style="border-radius:12px" src="https://open.spotify.com/embed/track/3QI5bIozef0HZ1kJnA2RdT?utm_source=generator" width="300" height="80" frameborder="0" allowfullscreen></iframe>
+            <img src="casal.jpg" alt="Nosso amor" width="300" style="border-radius: 10px;">
+            <h2>Te amo há:</h2>
+            <p id="contador"></p>
+            <div class="divider"></div>
+            <p>Uma contagem regressiva para a eternidade, desde o nosso primeiro "te amo"</p>
+        </div>
+    </div>
+    
+    <script>
+        function showContent() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            startCounter("2024-11-05T00:00:00"); // Data do primeiro "Te Amo"
+            createHearts();
+        }
+
+        function startCounter(startDate) {
+            setInterval(() => {
+                let now = new Date();
+                let past = new Date(startDate);
+                let diff = now - past;
+                
+                let months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+                let days = Math.floor(diff / (1000 * 60 * 60 * 24)) % 30;
+                let hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+                let minutes = Math.floor(diff / (1000 * 60)) % 60;
+                let seconds = Math.floor(diff / 1000) % 60;
+                
+                document.getElementById('contador').innerText = `${months} meses, ${days} dias, ${hours} horas, ${minutes} minutos e ${seconds} segundos`;
+            }, 1000);
+        }
+
+        function createHearts() {
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.innerHTML = "💕";
+                heart.classList.add("heart");
+                heart.style.left = Math.random() * window.innerWidth + "px";
+                heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                heart.style.fontSize = (Math.random() * 10 + 15) + "px";
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
